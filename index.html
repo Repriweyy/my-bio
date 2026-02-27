@@ -2,38 +2,68 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Repriwey's BIO</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
     <header class="hero">
-    <div class="welcome-container">
-        <span class="welcome-text">welcome</span>
-        <h1 class="main-title">Repriwey</h1>
-        <a href="#about" class="glass-button">
-    Down <span class="arrow">↓</span>
-</a>
-    </div>
-</header>
+        <div class="welcome-container">
+            <span class="welcome-text">welcome</span>
+            <h1 class="main-title">Repriwey</h1>
+            <a href="#about" class="glass-button">
+                Down <span class="arrow">↓</span>
+            </a>
+        </div>
     </header>
 
     <main class="content" id="about">
-    <div class="glass-container">
-        <div class="info-card">
-            <p><strong>Telegram:</strong> @Repriweyy</p>
-            <p><strong>Discord:</strong> repriweyy</p>
-            <p><strong>WeChat ID:</strong> Repriwey</p>
-            <p><strong>Country:</strong> Russia </p>
-            <p><strong>Birthday:</strong> 5 Nov</p>
-        </div>
+        <div class="glass-container">
+            
+            <div class="info-card">
+                <p><i class="fab fa-telegram"></i> <strong>Telegram:</strong> @Repriweyy</p>
+                <p><i class="fab fa-discord"></i> <strong>Discord:</strong> repriweyy</p>
+                <p><i class="fab fa-weixin"></i> <strong>WeChat ID:</strong> Repriwey</p>
+                <p><i class="fas fa-globe-europe"></i> <strong>Country:</strong> Russia 🇷🇺</p>
+                <p><i class="fas fa-birthday-cake"></i> <strong>Birthday:</strong> 5 Nov</p>
+            </div>
 
-        <div class="info-card">
-            <h3>Activity</h3>
-            <p>Учу HTML & CSS</p>
-        </div>
-    </div>
-</main>
+            <div class="info-card">
+                <h3>Activity</h3>
+                <p>Учу HTML & CSS</p>
+            </div>
 
+        </div>
+    </main>
+
+    <script>
+        const cursor = document.querySelector('.cursor');
+        const follower = document.querySelector('.cursor-follower');
+
+        document.addEventListener('mousemove', e => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            
+            follower.style.left = e.clientX - 11 + 'px';
+            follower.style.top = e.clientY - 11 + 'px';
+        });
+
+        const links = document.querySelectorAll('a, .info-card');
+        links.forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                follower.style.transform = 'scale(2.5)';
+                follower.style.background = 'rgba(255, 255, 255, 0.2)';
+            });
+            link.addEventListener('mouseleave', () => {
+                follower.style.transform = 'scale(1)';
+                follower.style.background = 'rgba(255, 255, 255, 0.1)';
+            });
+        });
+    </script>
 </body>
 </html>
