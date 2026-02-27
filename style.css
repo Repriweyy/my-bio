@@ -264,3 +264,42 @@ body {
         font-size: 2rem !important;
     }
 }
+/* ДОПОЛНЕНИЯ ДЛЯ СТАБИЛЬНОСТИ НА IPHONE */
+
+/* Помогаем Safari не засветлять фон */
+body {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+/* Помогаем сферам плавать без глюков */
+.background-ornament {
+    -webkit-transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);
+    will-change: transform, opacity;
+}
+
+/* Явно указываем размытие для Apple-устройств и стандарт */
+.info-card, .glass-button {
+    -webkit-backdrop-filter: blur(20px) !important;
+    backdrop-filter: blur(20px) !important; /* Добавили стандарт, чтобы VS Code не ругался */
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+    mask-image: radial-gradient(white, black); /* Добавили стандарт */
+}
+
+/* Фикс для заголовка и фона Safari */
+@media (max-width: 768px) {
+    .main-title {
+        font-size: 3.5rem !important; /* Жестко фиксируем размер для айфона */
+        max-width: 90vw;
+        margin: 10px auto;
+        white-space: nowrap;
+    }
+    
+    /* Запрещаем сферам перекрывать текст белым пятном */
+    .background-ornament {
+        filter: blur(40px); /* Уменьшаем размытие только на мобилках */
+        -webkit-filter: blur(40px);
+        opacity: 0.1;
+    }
+}
