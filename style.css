@@ -218,88 +218,34 @@ body {
 }
 /* ИСПРАВЛЕНИЕ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ */
 @media (max-width: 768px) {
-    /* 1. Уменьшаем главный заголовок, чтобы он влез в ширину */
-    .main-title {
-        font-size: 3.5rem !important; /* Уменьшаем с 11rem до 3.5rem */
-        letter-spacing: -2px;
-        margin: 10px 0;
-        white-space: nowrap; /* Не дает слову разрываться */
+    
+    /* ВОТ ЭТА СТРОЧКА УБИРАЕТ БЕЛЫЙ ЭКРАН */
+    .background-ornament {
+        display: none !important;
     }
 
-    /* 2. Подправляем надпись welcome */
+    /* ВСЁ ОСТАЛЬНОЕ ОСТАЁТСЯ КАК БЫЛО */
+    .main-title {
+        font-size: 3.5rem !important; 
+        letter-spacing: -2px;
+        margin: 10px 0;
+        white-space: nowrap; 
+    }
+
     .welcome-text {
         font-size: 1rem !important;
         letter-spacing: 4px !important;
     }
 
-    /* 3. Делаем кнопку "Down" удобной для нажатия пальцем */
     .glass-button {
         padding: 15px 40px !important;
-        width: auto;
-        min-width: 150px;
     }
 
-    /* 4. Настраиваем отступы, чтобы контент не прилипал к краям */
-    .hero {
-        padding: 0 20px;
-    }
-
-    /* 5. Убираем курсор-точку, на телефоне она не нужна и может глючить */
-    .cursor, .cursor-follower {
-        display: none !important;
-    }
-    
-    body {
-        cursor: auto !important;
-    }
-
-    /* 6. Карточки внизу тоже делаем на всю ширину */
     .info-card {
         width: 100% !important;
         padding: 25px !important;
         margin-bottom: 20px;
-    }
-    
-    .info-card h3 {
-        font-size: 2rem !important;
-    }
-}
-/* ДОПОЛНЕНИЯ ДЛЯ СТАБИЛЬНОСТИ НА IPHONE */
-
-/* Помогаем Safari не засветлять фон */
-body {
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-}
-
-/* Помогаем сферам плавать без глюков */
-.background-ornament {
-    -webkit-transform: translate3d(0,0,0);
-    transform: translate3d(0,0,0);
-    will-change: transform, opacity;
-}
-
-/* Явно указываем размытие для Apple-устройств и стандарт */
-.info-card, .glass-button {
-    -webkit-backdrop-filter: blur(20px) !important;
-    backdrop-filter: blur(20px) !important; /* Добавили стандарт, чтобы VS Code не ругался */
-    -webkit-mask-image: -webkit-radial-gradient(white, black);
-    mask-image: radial-gradient(white, black); /* Добавили стандарт */
-}
-
-/* Фикс для заголовка и фона Safari */
-@media (max-width: 768px) {
-    .main-title {
-        font-size: 3.5rem !important; /* Жестко фиксируем размер для айфона */
-        max-width: 90vw;
-        margin: 10px auto;
-        white-space: nowrap;
-    }
-    
-    /* Запрещаем сферам перекрывать текст белым пятном */
-    .background-ornament {
-        filter: blur(40px); /* Уменьшаем размытие только на мобилках */
-        -webkit-filter: blur(40px);
-        opacity: 0.1;
+        /* Делаем фон плотнее, чтобы текст не пропадал */
+        background: rgba(30, 20, 18, 0.95) !important;
     }
 }
