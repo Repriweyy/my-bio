@@ -216,3 +216,51 @@ body {
         cursor: auto !important;
     }
 }
+/* ИСПРАВЛЕНИЕ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ */
+@media (max-width: 768px) {
+    /* 1. Уменьшаем главный заголовок, чтобы он влез в ширину */
+    .main-title {
+        font-size: 3.5rem !important; /* Уменьшаем с 11rem до 3.5rem */
+        letter-spacing: -2px;
+        margin: 10px 0;
+        white-space: nowrap; /* Не дает слову разрываться */
+    }
+
+    /* 2. Подправляем надпись welcome */
+    .welcome-text {
+        font-size: 1rem !important;
+        letter-spacing: 4px !important;
+    }
+
+    /* 3. Делаем кнопку "Down" удобной для нажатия пальцем */
+    .glass-button {
+        padding: 15px 40px !important;
+        width: auto;
+        min-width: 150px;
+    }
+
+    /* 4. Настраиваем отступы, чтобы контент не прилипал к краям */
+    .hero {
+        padding: 0 20px;
+    }
+
+    /* 5. Убираем курсор-точку, на телефоне она не нужна и может глючить */
+    .cursor, .cursor-follower {
+        display: none !important;
+    }
+    
+    body {
+        cursor: auto !important;
+    }
+
+    /* 6. Карточки внизу тоже делаем на всю ширину */
+    .info-card {
+        width: 100% !important;
+        padding: 25px !important;
+        margin-bottom: 20px;
+    }
+    
+    .info-card h3 {
+        font-size: 2rem !important;
+    }
+}
