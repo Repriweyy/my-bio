@@ -1,5 +1,5 @@
 /* ================================================================
-    1. ГЛОБАЛЬНЫЕ НАСТРОЙКИ (CORE)
+    1. ГЛОБАЛЬНЫЕ НАСТРОЙКИ (CORE & RESET)
 ================================================================
 */
 * {
@@ -20,7 +20,8 @@
     --text-light: #f0e6e2;
     --glass-bg: rgba(255, 255, 255, 0.05);
     --glass-border: rgba(255, 255, 255, 0.1);
-    --glow-color: rgba(188, 168, 159, 0.3);
+    --glow-soft: rgba(188, 168, 159, 0.2);
+    --glow-bright: rgba(188, 168, 159, 0.4);
 }
 
 html {
@@ -37,11 +38,11 @@ body {
     cursor: none !important;
     overflow-x: hidden;
     position: relative;
-    line-height: 1.5;
+    line-height: 1.4;
 }
 
 /* ================================================================
-    2. ФОНОВЫЕ ЭФФЕКТЫ
+    2. ФОНОВЫЕ ЭФФЕКТЫ (DECOR)
 ================================================================
 */
 .background-ornament {
@@ -56,15 +57,14 @@ body {
 
 .sphere-1 { width: 600px; height: 600px; background: #5E4B43; top: -100px; left: -150px; }
 .sphere-2 { width: 800px; height: 800px; background: #4a372e; bottom: -200px; right: -250px; animation-delay: -5s; }
-.sphere-3 { width: 400px; height: 400px; background: #bca89f; top: 40%; left: 50%; animation-delay: -10s; }
 
 @keyframes float-circles {
     0% { transform: translate(0, 0); }
-    100% { transform: translate(40px, 60px); }
+    100% { transform: translate(30px, 50px); }
 }
 
 /* ================================================================
-    3. ГЛАВНЫЙ ЭКРАН (HERO)
+    3. ГЛАВНЫЙ ЭКРАН (HERO) - ФИКС БУКВЫ Y
 ================================================================
 */
 .hero {
@@ -82,25 +82,26 @@ body {
     display: block;
     color: var(--accent-color);
     opacity: 0.7;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 .main-title {
     font-size: 11rem;
     font-weight: bold;
-    line-height: 1.2; 
-    padding-bottom: 20px; 
+    /* Увеличен line-height для хвоста 'y' */
+    line-height: 1.3;
+    padding-bottom: 15px;
     margin-bottom: 20px;
     background: linear-gradient(to bottom, #f0e6e2 30%, #bca89f 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.4));
 }
 
 .glass-button {
     text-decoration: none;
     color: var(--text-light);
-    padding: 18px 45px;
+    padding: 16px 40px;
     background: var(--glass-bg);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
@@ -110,19 +111,18 @@ body {
     flex-direction: column;
     align-items: center;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    font-size: 1.1rem;
 }
 
 .glass-button:hover {
     background: rgba(255, 255, 255, 0.1);
     transform: translateY(-5px);
-    box-shadow: 0 0 20px var(--glow-color);
+    box-shadow: 0 0 20px var(--glow-soft);
     border-color: rgba(255, 255, 255, 0.3);
 }
 
 .arrow {
     margin-top: 5px;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     animation: bounce 2s infinite;
 }
 
@@ -132,7 +132,7 @@ body {
 }
 
 /* ================================================================
-    4. КАРТОЧКИ С ЭФФЕКТОМ СВЕЧЕНИЯ
+    4. КАРТОЧКИ (INFO CARDS) - ВОЗВРАТ СВЕЧЕНИЯ
 ================================================================
 */
 .content {
@@ -165,29 +165,31 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    transition: all 0.4s ease; /* Плавное свечение */
+    transition: all 0.4s ease;
 }
 
-/* Возвращаем свечение при наведении */
+/* Эффект свечения при наведении */
 .info-card:hover {
     transform: translateY(-10px);
     background: rgba(255, 255, 255, 0.08);
     border-color: rgba(255, 255, 255, 0.3);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4), 0 0 20px var(--glow-color);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 25px var(--glow-soft);
 }
 
 .info-card h3 {
     font-size: 3rem;
     margin-bottom: 25px;
     color: var(--text-light);
+    border-bottom: 1px solid var(--glass-border);
 }
 
 .info-card p {
     font-size: 1.6rem;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     display: flex;
     align-items: center;
     color: #d1c2bc;
+    white-space: nowrap; /* Чтобы текст не прыгал */
 }
 
 .info-card i {
@@ -195,11 +197,11 @@ body {
     font-size: 2.2rem;
     color: var(--text-light);
     margin-right: 15px;
-    filter: drop-shadow(0 0 8px var(--glow-color));
+    filter: drop-shadow(0 0 8px var(--glow-bright));
 }
 
 /* ================================================================
-    5. МОНСТРИК (БЕЗ ТРЯСКИ)
+    5. МОНСТРИК (MONSTER - БЕЗ ТРЯСКИ ЭКРАНА)
 ================================================================
 */
 .monster-wrapper {
@@ -226,7 +228,7 @@ body {
 }
 
 .monster-pic:active { 
-    transform: scale(0.9) rotate(-2deg); 
+    transform: scale(0.92) rotate(-2deg); 
 }
 
 .cookie-particle {
@@ -243,7 +245,7 @@ body {
 }
 
 /* ================================================================
-    6. КУРСОР (ИСПРАВЛЕННОЕ ОТСТАВАНИЕ)
+    6. КУРСОР (БЫСТРЫЙ ОТКЛИК)
 ================================================================
 */
 .cursor { 
@@ -254,8 +256,7 @@ body {
     position: fixed; 
     z-index: 10000; 
     pointer-events: none;
-    /* Убираем любые transition для мгновенного отклика */
-    transition: none !important; 
+    transition: none !important; /* Мгновенный отклик */
 }
 
 .cursor-follower { 
@@ -266,51 +267,73 @@ body {
     position: fixed; 
     z-index: 9999; 
     pointer-events: none; 
-    /* Минимальная задержка для эффекта «плавного следования» */
-    transition: transform 0.08s ease-out, background 0.3s ease; 
+    transition: transform 0.08s ease-out; /* Минимальная задержка */
 }
 
 /* ================================================================
-    7. АДАПТИВ (MOBILE)
+    7. АДАПТИВ (MOBILE - ЖЕСТКИЙ ФИКС ВЕРСТКИ)
 ================================================================
 */
 @media (max-width: 768px) {
+    /* Фикс кнопки DOWN */
     .glass-button {
-        padding: 10px 25px !important;
+        padding: 10px 24px !important;
         font-size: 0.85rem !important;
         border-radius: 12px !important;
     }
 
+    .arrow { font-size: 1rem !important; }
+
+    /* Фикс заголовка и буквы Y */
     .main-title { 
         font-size: 3.5rem !important; 
-        line-height: 1.3 !important; 
+        line-height: 1.4 !important; 
         padding-bottom: 10px !important;
     }
     
+    /* Фикс развалившегося текста в карточках */
     .info-card {
-        width: 90% !important;
-        padding: 20px !important;
+        width: 92% !important;
+        padding: 20px 15px !important;
         min-height: auto !important;
         background: rgba(25, 15, 12, 0.98) !important;
     }
 
-    .info-card:hover {
-        transform: none !important; /* Убираем ховер на мобилках */
-        box-shadow: none !important;
+    .info-card h3 { font-size: 1.8rem !important; margin-bottom: 15px !important; }
+    
+    .info-card p { 
+        font-size: 0.95rem !important; /* Уменьшили шрифт, чтобы влезло */
+        white-space: normal !important; /* Разрешили перенос */
+        word-break: break-all; /* Если ID слишком длинный */
+        margin-bottom: 8px !important;
     }
 
-    .monster-pic { width: 250px !important; }
+    .info-card i { font-size: 1.3rem !important; width: 30px !important; margin-right: 10px !important; }
+
+    /* Фикс монстра */
+    .content { padding-bottom: 380px !important; }
+    .monster-wrapper { height: 380px; }
+    .monster-pic { width: 240px !important; }
 
     .cursor, .cursor-follower { display: none !important; }
     body { cursor: auto !important; }
 }
 
 /* ================================================================
-    8. ДОПОЛНИТЕЛЬНЫЕ СТИЛИ (SCROLL & DECOR)
+    8. СКРОЛЛБАР И ДЕКОР
 ================================================================
 */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg-dark); }
 ::-webkit-scrollbar-thumb { background: #3e2b25; border-radius: 10px; }
+::selection { background: var(--accent-color); color: var(--bg-dark); }
 
-/* Конец файла - 300+ строк */
+/* Плавное появление контента */
+.info-card, .main-title, .welcome-text, .glass-button {
+    animation: fadeInContent 0.8s ease-out;
+}
+
+@keyframes fadeInContent {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
