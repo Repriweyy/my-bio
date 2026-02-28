@@ -109,8 +109,8 @@ body {
     min-height: 100vh;
     padding: 100px 0;
     position: relative;
-    /* Увеличиваем отступ снизу, чтобы монстр не закрывал текст */
-    padding-bottom: 400px; 
+    /* Увеличенный отступ снизу гарантирует, что монстрик не закроет текст при скролле */
+    padding-bottom: 500px; 
 }
 
 .glass-container {
@@ -169,19 +169,18 @@ body {
     color: #f0e6e2;
 }
 
-/* --- МОНСТРИК --- */
+/* --- ФИНАЛЬНЫЕ НАСТРОЙКИ МОНСТРИКА --- */
 .monster-pic {
     position: absolute;
-    bottom: 0;
+    bottom: 20px; /* Фиксируем у нижней границы блока content */
     left: 50%;
     transform: translateX(-50%);
-    /* Делаем монстра большим */
-    width: 480px; 
+    width: 500px; /* Размер для ПК */
     height: auto;
-    z-index: -1;
+    z-index: -1; /* Оставляем за текстом для безопасности */
     opacity: 1;
     pointer-events: none;
-    filter: drop-shadow(0 0 30px rgba(188, 168, 159, 0.2));
+    filter: drop-shadow(0 0 30px rgba(188, 168, 159, 0.3));
 }
 
 /* --- КУРСОР --- */
@@ -206,7 +205,7 @@ body {
     transition: transform 0.1s ease-out;
 }
 
-/* ИСПРАВЛЕНИЕ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ */
+/* ИСПРАВЛЕНИЕ ДЛЯ ТЕЛЕФОНОВ И ЛЮБЫХ МАСШТАБОВ */
 @media (max-width: 768px) {
     .background-ornament {
         display: none !important;
@@ -229,29 +228,27 @@ body {
     .info-card {
         width: 100% !important;
         padding: 25px !important;
-        margin-bottom: 20px;
+        margin-bottom: 30px;
         min-height: auto;
         background: rgba(30, 20, 18, 0.95) !important;
-        backdrop-filter: none !important;
-        -webkit-backdrop-filter: none !important;
     }
 
-    /* Исправляем перенос текста WeChat */
     .info-card p {
         font-size: 1.1rem !important;
-        flex-wrap: wrap;
+        flex-wrap: wrap; /* Позволяет WeChat ID переноситься, не ломая верстку */
     }
 
     .info-card h3 { font-size: 2rem !important; }
 
-    /* Монстрик на мобилке */
+    /* МОНСТРИК НА МОБИЛКЕ */
     .content {
-        padding-bottom: 320px; /* Отступ для монстра на телефоне */
+        padding-bottom: 400px; /* Еще больше места внизу для телефонов */
     }
 
     .monster-pic {
-        width: 280px; /* Размер на телефоне */
-        bottom: 10px;
+        width: 300px; /* Оптимальный размер для экрана телефона */
+        bottom: 20px;
+        z-index: 1; /* Чтобы он был виден четко */
     }
 
     .cursor, .cursor-follower {
