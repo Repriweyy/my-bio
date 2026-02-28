@@ -1,4 +1,4 @@
-/* --- БАЗОВЫЕ НАСТРОЙКИ --- */
+/* --- 1. ОБЩИЕ СТИЛИ --- */
 * {
     margin: 0;
     padding: 0;
@@ -19,7 +19,7 @@ body {
     position: relative;
 }
 
-/* --- ЖИВОЙ ФОН (СФЕРЫ) --- */
+/* --- 2. ДЕКОРАТИВНЫЕ СФЕРЫ НА ФОНЕ --- */
 .background-ornament {
     position: fixed;
     border-radius: 50%;
@@ -31,22 +31,28 @@ body {
 }
 
 .sphere-1 {
-    width: 600px; height: 600px;
+    width: 600px;
+    height: 600px;
     background: #5E4B43;
-    top: -100px; left: -150px;
+    top: -100px;
+    left: -150px;
 }
 
 .sphere-2 {
-    width: 800px; height: 800px;
+    width: 800px;
+    height: 800px;
     background: #4a372e;
-    bottom: -200px; right: -250px;
+    bottom: -200px;
+    right: -250px;
     animation-delay: -5s;
 }
 
 .sphere-3 {
-    width: 400px; height: 400px;
+    width: 400px;
+    height: 400px;
     background: #bca89f;
-    top: 40%; left: 50%;
+    top: 40%;
+    left: 50%;
     animation-delay: -10s;
 }
 
@@ -55,7 +61,7 @@ body {
     100% { transform: translate(100px, 150px) rotate(15deg); }
 }
 
-/* --- ГЛАВНЫЙ ЭКРАН (HERO) --- */
+/* --- 3. ГЛАВНЫЙ ЭКРАН (HERO) --- */
 .hero {
     height: 100vh;
     display: flex;
@@ -96,6 +102,7 @@ body {
     flex-direction: column;
     align-items: center;
     transition: 0.3s;
+    margin-top: 30px;
 }
 
 .glass-button:hover {
@@ -103,14 +110,25 @@ body {
     transform: scale(1.05);
 }
 
-/* --- КОНТЕНТ И КАРТОЧКИ --- */
+.arrow {
+    font-size: 1.5rem;
+    margin-top: 5px;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+    40% {transform: translateY(-10px);}
+    60% {transform: translateY(-5px);}
+}
+
+/* --- 4. КОНТЕНТ И КАРТОЧКИ --- */
 .content {
     width: 100%;
     min-height: 100vh;
     padding: 100px 0;
     position: relative;
-    /* Увеличенный отступ снизу гарантирует, что монстрик не закроет текст при скролле */
-    padding-bottom: 500px; 
+    padding-bottom: 600px; /* Запас места, чтобы монстр не закрывал текст */
 }
 
 .glass-container {
@@ -135,30 +153,14 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .info-card:hover {
-    transform: translateY(-10px);
+    transform: translateY(-15px);
     border-color: rgba(255, 255, 255, 0.3);
-    box-shadow: 0 0 40px rgba(188, 168, 159, 0.15);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
     background: rgba(255, 255, 255, 0.08);
-}
-
-.info-card i {
-    width: 50px;
-    margin-right: 15px;
-    font-size: 2rem;
-    color: #f0e6e2;
-    text-align: center;
-}
-
-.info-card p {
-    font-size: 1.6rem;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    color: #d1c2bc;
 }
 
 .info-card h3 {
@@ -169,21 +171,65 @@ body {
     color: #f0e6e2;
 }
 
-/* --- ФИНАЛЬНЫЕ НАСТРОЙКИ МОНСТРИКА --- */
-.monster-pic {
-    position: absolute;
-    bottom: 20px; /* Фиксируем у нижней границы блока content */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 500px; /* Размер для ПК */
-    height: auto;
-    z-index: -1; /* Оставляем за текстом для безопасности */
-    opacity: 1;
-    pointer-events: none;
-    filter: drop-shadow(0 0 30px rgba(188, 168, 159, 0.3));
+.info-card p {
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    color: #d1c2bc;
 }
 
-/* --- КУРСОР --- */
+.info-card i {
+    width: 60px;
+    font-size: 2.2rem;
+    color: #f0e6e2;
+    text-align: center;
+}
+
+/* --- 5. МОНСТРИК И ПЕЧЕНЬКИ --- */
+.monster-wrapper {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.monster-pic {
+    width: 550px; /* Очень большой монстр на ПК */
+    height: auto;
+    cursor: pointer;
+    pointer-events: auto;
+    filter: drop-shadow(0 0 50px rgba(188, 168, 159, 0.4));
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 5;
+}
+
+.monster-pic:hover {
+    transform: scale(1.08);
+}
+
+.monster-pic:active {
+    transform: scale(0.95);
+}
+
+.cookie-particle {
+    position: absolute;
+    font-size: 2.5rem;
+    pointer-events: none;
+    z-index: 10;
+    animation: flyUp 1s forwards ease-in;
+}
+
+@keyframes flyUp {
+    0% { transform: translateY(0) rotate(0); opacity: 1; }
+    100% { transform: translateY(-250px) rotate(360deg); opacity: 0; }
+}
+
+/* --- 6. КУРСОР --- */
 .cursor {
     width: 8px; height: 8px;
     background: #f0e6e2;
@@ -205,50 +251,50 @@ body {
     transition: transform 0.1s ease-out;
 }
 
-/* ИСПРАВЛЕНИЕ ДЛЯ ТЕЛЕФОНОВ И ЛЮБЫХ МАСШТАБОВ */
+/* --- 7. АДАПТИВНОСТЬ ДЛЯ МОБИЛОК (iPhone & Others) --- */
 @media (max-width: 768px) {
     .background-ornament {
         display: none !important;
     }
 
     .main-title {
-        font-size: 3.5rem !important;
-        letter-spacing: -2px;
-        margin: 10px 0;
-        white-space: nowrap;
-        -webkit-text-fill-color: initial; 
+        font-size: 3.8rem !important;
+        white-space: normal;
+        line-height: 1.1;
+        -webkit-text-fill-color: initial;
         color: #f0e6e2;
     }
 
     .welcome-text {
-        font-size: 1rem !important;
-        letter-spacing: 4px !important;
+        font-size: 1.2rem !important;
+        letter-spacing: 5px !important;
     }
 
     .info-card {
         width: 100% !important;
-        padding: 25px !important;
-        margin-bottom: 30px;
+        padding: 30px 20px !important;
+        margin-bottom: 25px;
         min-height: auto;
-        background: rgba(30, 20, 18, 0.95) !important;
+        background: rgba(30, 20, 18, 0.98) !important;
+        backdrop-filter: none !important;
     }
 
     .info-card p {
-        font-size: 1.1rem !important;
-        flex-wrap: wrap; /* Позволяет WeChat ID переноситься, не ломая верстку */
+        font-size: 1.2rem !important;
+        flex-wrap: wrap; /* Чтобы длинные ID не вылезали за края */
     }
 
-    .info-card h3 { font-size: 2rem !important; }
+    .info-card h3 {
+        font-size: 2.2rem !important;
+    }
 
-    /* МОНСТРИК НА МОБИЛКЕ */
     .content {
-        padding-bottom: 400px; /* Еще больше места внизу для телефонов */
+        padding-bottom: 450px; /* Место для монстра на телефоне */
     }
 
     .monster-pic {
-        width: 300px; /* Оптимальный размер для экрана телефона */
+        width: 320px; /* Крупный монстр на мобилке */
         bottom: 20px;
-        z-index: 1; /* Чтобы он был виден четко */
     }
 
     .cursor, .cursor-follower {

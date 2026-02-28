@@ -27,7 +27,6 @@
 
     <main class="content" id="about">
         <div class="glass-container">
-            
             <div class="info-card">
                 <p><i class="fab fa-telegram"></i> <strong>Telegram:</strong> @Repriweyy</p>
                 <p><i class="fab fa-discord"></i> <strong>Discord:</strong> repriweyy</p>
@@ -46,22 +45,38 @@
             </div>
         </div>
 
-        <img src="monster.png" class="monster-pic" alt="Cookie Monster">
+        <div class="monster-wrapper">
+            <img src="monster.png" class="monster-pic" id="monster-btn" alt="Cookie Monster">
+        </div>
     </main>
 
     <script>
+        // Логика курсора
         const cursor = document.querySelector('.cursor');
         const follower = document.querySelector('.cursor-follower');
 
         document.addEventListener('mousemove', e => {
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
-            
             follower.style.left = e.clientX - 11 + 'px';
             follower.style.top = e.clientY - 11 + 'px';
         });
 
-        const links = document.querySelectorAll('a, .info-card');
+        // Интерактив с печеньками
+        const monster = document.getElementById('monster-btn');
+        monster.addEventListener('click', (e) => {
+            for(let i = 0; i < 3; i++) { // Создаем 3 печеньки при клике
+                const cookie = document.createElement('div');
+                cookie.innerText = '🍪';
+                cookie.className = 'cookie-particle';
+                cookie.style.left = `calc(50% + ${Math.random() * 60 - 30}px)`;
+                cookie.style.bottom = '150px';
+                monster.parentElement.appendChild(cookie);
+                setTimeout(() => cookie.remove(), 1000);
+            }
+        });
+
+        const links = document.querySelectorAll('a, .info-card, #monster-btn');
         links.forEach(link => {
             link.addEventListener('mouseenter', () => {
                 follower.style.transform = 'scale(2.5)';
