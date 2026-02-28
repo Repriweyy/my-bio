@@ -1,25 +1,47 @@
-/* --- 1. ОБЩИЕ СТИЛИ --- */
+/* ================================================================
+    1. ГЛОБАЛЬНЫЕ СБРОСЫ И ПЕРЕМЕННЫЕ (RESET & ROOT)
+================================================================
+*/
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    /* Убираем синий квадрат выделения на мобильных устройствах */
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-touch-callout: none;
+    outline: none !important;
+}
+
+:root {
+    --bg-dark: #160e0c;
+    --bg-gradient: radial-gradient(circle at center, #2E1F1B 0%, #160e0c 100%);
+    --accent-color: #bca89f;
+    --text-light: #f0e6e2;
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --transition-smooth: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 html {
     scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
 }
 
 body {
     font-family: "Comic Sans MS", "Comic Sans", "Chalkboard SE", sans-serif;
-    background: radial-gradient(circle at center, #2E1F1B 0%, #160e0c 100%);
-    color: #bca89f;
+    background: var(--bg-gradient);
+    color: var(--accent-color);
     min-height: 100vh;
-    cursor: none !important;
+    cursor: none !important; /* Для кастомного курсора */
     overflow-x: hidden;
     position: relative;
+    line-height: 1.6;
 }
 
-/* --- 2. ДЕКОРАТИВНЫЕ СФЕРЫ НА ФОНЕ --- */
+/* ================================================================
+    2. ДЕКОРАТИВНЫЕ ЭЛЕМЕНТЫ ФОНА (BACKGROUND ORNAMENTS)
+================================================================
+*/
 .background-ornament {
     position: fixed;
     border-radius: 50%;
@@ -61,247 +83,319 @@ body {
     100% { transform: translate(100px, 150px) rotate(15deg); }
 }
 
-/* --- 3. ГЛАВНЫЙ ЭКРАН (HERO) --- */
+/* ================================================================
+    3. ШАПКА И ПРИВЕТСТВИЕ (HERO SECTION)
+================================================================
+*/
 .hero {
     height: 100vh;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
+    padding: 20px;
+    position: relative;
+}
+
+.welcome-container {
+    z-index: 2;
 }
 
 .welcome-text {
-    font-size: 2rem;
-    letter-spacing: 10px;
+    font-size: 2.2rem;
+    letter-spacing: 15px;
     text-transform: lowercase;
     display: block;
-    color: #bca89f;
+    color: var(--accent-color);
+    opacity: 0.7;
+    margin-bottom: 10px;
+    animation: fadeIn 2s ease-out;
 }
 
 .main-title {
     font-size: 11rem;
     font-weight: bold;
     line-height: 1;
-    margin: 20px 0;
+    margin-bottom: 40px;
     background: linear-gradient(to bottom, #f0e6e2 30%, #bca89f 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    text-shadow: 0 10px 30px rgba(188, 168, 159, 0.2);
+    text-shadow: 0 15px 45px rgba(188, 168, 159, 0.2);
+    animation: slideUp 1.2s ease-out;
 }
 
 .glass-button {
     text-decoration: none;
-    color: #f0e6e2;
-    padding: 20px 50px;
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
+    color: var(--text-light);
+    padding: 25px 65px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid var(--glass-border);
+    border-radius: 30px;
     display: inline-flex;
     flex-direction: column;
     align-items: center;
-    transition: 0.3s;
-    margin-top: 30px;
+    transition: var(--transition-smooth);
+    font-size: 1.2rem;
+    letter-spacing: 3px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 .glass-button:hover {
-    background: rgba(255, 255, 255, 0.07);
-    transform: scale(1.05);
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-10px);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
 }
 
 .arrow {
-    font-size: 1.5rem;
-    margin-top: 5px;
+    margin-top: 10px;
+    font-size: 1.8rem;
     animation: bounce 2s infinite;
 }
 
 @keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-    40% {transform: translateY(-10px);}
-    60% {transform: translateY(-5px);}
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-12px); }
+    60% { transform: translateY(-6px); }
 }
 
-/* --- 4. КОНТЕНТ И КАРТОЧКИ --- */
+/* ================================================================
+    4. ОСНОВНОЙ КОНТЕНТ (CONTENT & CARDS)
+================================================================
+*/
 .content {
     width: 100%;
     min-height: 100vh;
-    padding: 100px 0;
+    padding: 150px 0;
     position: relative;
-    padding-bottom: 600px; /* Запас места, чтобы монстр не закрывал текст */
+    /* Место для монстра снизу */
+    padding-bottom: 700px; 
 }
 
 .glass-container {
     display: flex;
     justify-content: center;
-    gap: 40px;
+    gap: 50px;
     flex-wrap: wrap;
     max-width: 1400px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 30px;
 }
 
 .info-card {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 40px;
-    padding: 50px;
-    width: 550px;
-    min-height: 400px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid var(--glass-border);
+    border-radius: 50px;
+    padding: 65px;
+    width: 600px;
+    min-height: 450px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: var(--transition-smooth);
+    position: relative;
+    overflow: hidden;
+}
+
+.info-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+    transition: 0.5s;
+}
+
+.info-card:hover::before {
+    left: 100%;
 }
 
 .info-card:hover {
-    transform: translateY(-15px);
-    border-color: rgba(255, 255, 255, 0.3);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    transform: translateY(-20px) scale(1.02);
     background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
 }
 
 .info-card h3 {
-    font-size: 3rem;
-    margin-bottom: 25px;
+    font-size: 3.5rem;
+    margin-bottom: 35px;
+    color: var(--text-light);
     border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 10px;
-    color: #f0e6e2;
+    padding-bottom: 15px;
 }
 
 .info-card p {
-    font-size: 1.6rem;
-    margin-bottom: 20px;
+    font-size: 1.8rem;
+    margin-bottom: 25px;
     display: flex;
     align-items: center;
     color: #d1c2bc;
+    transition: 0.3s;
+}
+
+.info-card p:hover {
+    color: var(--text-light);
+    transform: translateX(10px);
 }
 
 .info-card i {
-    width: 60px;
-    font-size: 2.2rem;
-    color: #f0e6e2;
+    width: 70px;
+    font-size: 2.5rem;
+    color: var(--text-light);
+    margin-right: 20px;
     text-align: center;
+    filter: drop-shadow(0 0 10px rgba(240, 230, 226, 0.4));
 }
 
-/* --- 5. МОНСТРИК И ПЕЧЕНЬКИ --- */
+/* ================================================================
+    5. МОНСТРИК И ПЕЧЕНЬКИ (THE BEAST & COOKIES)
+================================================================
+*/
 .monster-wrapper {
     position: absolute;
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
     width: 100%;
-    display: flex;
-    justify-content: center;
+    text-align: center;
     pointer-events: none;
+    z-index: 10;
 }
 
 .monster-pic {
-    width: 550px; /* Очень большой монстр на ПК */
+    width: 600px;
     height: auto;
     cursor: pointer;
     pointer-events: auto;
     filter: drop-shadow(0 0 50px rgba(188, 168, 159, 0.4));
     transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    z-index: 5;
+    user-select: none;
+    -webkit-user-drag: none;
 }
 
 .monster-pic:hover {
-    transform: scale(1.08);
+    transform: scale(1.1) rotate(2deg);
 }
 
 .monster-pic:active {
-    transform: scale(0.95);
+    transform: scale(0.9);
 }
 
 .cookie-particle {
     position: absolute;
-    font-size: 2.5rem;
+    font-size: 3.5rem;
     pointer-events: none;
-    z-index: 10;
-    animation: flyUp 1s forwards ease-in;
+    z-index: 25;
+    animation: cookieEatAnimation 1s forwards ease-in;
 }
 
-@keyframes flyUp {
-    0% { transform: translateY(0) rotate(0); opacity: 1; }
-    100% { transform: translateY(-250px) rotate(360deg); opacity: 0; }
+@keyframes cookieEatAnimation {
+    0% { 
+        transform: translateY(0) rotate(0deg) scale(1); 
+        opacity: 1; 
+    }
+    100% { 
+        transform: translateY(-200px) rotate(720deg) scale(0.3); 
+        opacity: 0; 
+    }
 }
 
-/* --- 6. КУРСОР --- */
+/* ================================================================
+    6. КАСТОМНЫЙ КУРСОР (CURSOR UI)
+================================================================
+*/
 .cursor {
-    width: 8px; height: 8px;
-    background: #f0e6e2;
+    width: 12px; height: 12px;
+    background: var(--text-light);
     border-radius: 50%;
     position: fixed;
-    pointer-events: none;
     z-index: 10000;
+    pointer-events: none;
+    box-shadow: 0 0 15px rgba(240, 230, 226, 0.8);
 }
 
 .cursor-follower {
-    width: 30px; height: 30px;
-    background: rgba(240, 230, 226, 0.1);
-    border: 1px solid rgba(240, 230, 226, 0.3);
-    backdrop-filter: blur(4px);
+    width: 40px; height: 40px;
+    border: 2px solid rgba(240, 230, 226, 0.4);
+    background: rgba(240, 230, 226, 0.05);
+    backdrop-filter: blur(5px);
     border-radius: 50%;
     position: fixed;
-    pointer-events: none;
     z-index: 9999;
-    transition: transform 0.1s ease-out;
+    pointer-events: none;
+    transition: transform 0.15s ease-out;
 }
 
-/* --- 7. АДАПТИВНОСТЬ ДЛЯ МОБИЛОК (iPhone & Others) --- */
+/* ================================================================
+    7. АДАПТИВНОСТЬ (MOBILE & TABLET OPTIMIZATION)
+================================================================
+*/
+@media (max-width: 1024px) {
+    .main-title { font-size: 8rem; }
+    .info-card { width: 500px; padding: 40px; }
+}
+
 @media (max-width: 768px) {
-    .background-ornament {
-        display: none !important;
-    }
+    /* Скрываем тяжелые эффекты на мобилках для скорости */
+    .background-ornament { display: none !important; }
+    
+    .hero { padding: 0 20px; }
 
-    .main-title {
-        font-size: 3.8rem !important;
-        white-space: normal;
+    .main-title { 
+        font-size: 4rem !important; 
         line-height: 1.1;
-        -webkit-text-fill-color: initial;
-        color: #f0e6e2;
+        letter-spacing: -2px;
+        background: none;
+        -webkit-text-fill-color: var(--text-light);
     }
 
-    .welcome-text {
-        font-size: 1.2rem !important;
-        letter-spacing: 5px !important;
-    }
+    .welcome-text { font-size: 1.4rem; letter-spacing: 8px; }
 
-    .info-card {
-        width: 100% !important;
-        padding: 30px 20px !important;
-        margin-bottom: 25px;
+    .content { padding-bottom: 550px; }
+
+    .info-card { 
+        width: 100% !important; 
+        padding: 40px 25px !important; 
         min-height: auto;
         background: rgba(30, 20, 18, 0.98) !important;
-        backdrop-filter: none !important;
+        border-radius: 40px;
+        margin-bottom: 30px;
     }
 
-    .info-card p {
-        font-size: 1.2rem !important;
-        flex-wrap: wrap; /* Чтобы длинные ID не вылезали за края */
+    .info-card p { font-size: 1.3rem !important; flex-wrap: wrap; }
+    .info-card h3 { font-size: 2.8rem !important; }
+
+    .monster-pic { 
+        width: 360px; /* Большой монстр на телефоне */
     }
 
-    .info-card h3 {
-        font-size: 2.2rem !important;
+    /* Специальная анимация для рта мобильного монстра */
+    @keyframes cookieEatAnimation {
+        0% { transform: translateY(0) scale(1); opacity: 1; }
+        100% { transform: translateY(-120px) scale(0.4); opacity: 0; }
     }
 
-    .content {
-        padding-bottom: 450px; /* Место для монстра на телефоне */
-    }
+    /* Убираем курсор на тачскринах */
+    .cursor, .cursor-follower { display: none !important; }
+    body { cursor: auto !important; }
+}
 
-    .monster-pic {
-        width: 320px; /* Крупный монстр на мобилке */
-        bottom: 20px;
-    }
+/* ================================================================
+    8. ДОПОЛНИТЕЛЬНЫЕ АНИМАЦИИ (EXTRA ANIMATIONS)
+================================================================
+*/
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 0.7; }
+}
 
-    .cursor, .cursor-follower {
-        display: none !important;
-    }
-
-    body {
-        cursor: auto !important;
-    }
+@keyframes slideUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
 }

@@ -51,7 +51,6 @@
     </main>
 
     <script>
-        // Логика курсора
         const cursor = document.querySelector('.cursor');
         const follower = document.querySelector('.cursor-follower');
 
@@ -62,15 +61,15 @@
             follower.style.top = e.clientY - 11 + 'px';
         });
 
-        // Интерактив с печеньками
         const monster = document.getElementById('monster-btn');
         monster.addEventListener('click', (e) => {
-            for(let i = 0; i < 3; i++) { // Создаем 3 печеньки при клике
+            for(let i = 0; i < 3; i++) {
                 const cookie = document.createElement('div');
                 cookie.innerText = '🍪';
                 cookie.className = 'cookie-particle';
-                cookie.style.left = `calc(50% + ${Math.random() * 60 - 30}px)`;
-                cookie.style.bottom = '150px';
+                // Появление печенек в районе рта (центр монстра)
+                cookie.style.left = `calc(50% + ${Math.random() * 40 - 20}px)`;
+                cookie.style.bottom = '180px'; 
                 monster.parentElement.appendChild(cookie);
                 setTimeout(() => cookie.remove(), 1000);
             }
