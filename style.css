@@ -1,45 +1,47 @@
 /* ================================================================
-    1. ГЛОБАЛЬНЫЕ СБРОСЫ И ПЕРЕМЕННЫЕ (RESET & ROOT)
+    1. ГЛОБАЛЬНЫЕ СБРОСЫ (CORE & RESET)
 ================================================================
 */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    /* Убираем синий квадрат выделения на мобильных устройствах */
+    /* Убираем любые системные выделения при нажатии */
     -webkit-tap-highlight-color: transparent !important;
     -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
     outline: none !important;
 }
 
 :root {
     --bg-dark: #160e0c;
-    --bg-gradient: radial-gradient(circle at center, #2E1F1B 0%, #160e0c 100%);
     --accent-color: #bca89f;
     --text-light: #f0e6e2;
     --glass-bg: rgba(255, 255, 255, 0.05);
     --glass-border: rgba(255, 255, 255, 0.1);
-    --transition-smooth: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    --transition-smooth: all 0.3s ease;
 }
 
 html {
     scroll-behavior: smooth;
-    -webkit-font-smoothing: antialiased;
+    /* Фикс масштаба для мобильных браузеров */
+    -webkit-text-size-adjust: 100%;
 }
 
 body {
     font-family: "Comic Sans MS", "Comic Sans", "Chalkboard SE", sans-serif;
-    background: var(--bg-gradient);
+    background: radial-gradient(circle at center, #2E1F1B 0%, #160e0c 100%);
     color: var(--accent-color);
     min-height: 100vh;
-    cursor: none !important; /* Для кастомного курсора */
+    cursor: none !important;
     overflow-x: hidden;
     position: relative;
-    line-height: 1.6;
+    line-height: 1.5;
 }
 
 /* ================================================================
-    2. ДЕКОРАТИВНЫЕ ЭЛЕМЕНТЫ ФОНА (BACKGROUND ORNAMENTS)
+    2. ФОНОВЫЕ ЭФФЕКТЫ (BACKGROUND)
 ================================================================
 */
 .background-ornament {
@@ -47,214 +49,155 @@ body {
     border-radius: 50%;
     filter: blur(80px);
     z-index: -1;
-    opacity: 0.15;
+    opacity: 0.12;
     pointer-events: none;
     animation: float-circles 25s infinite alternate ease-in-out;
 }
 
-.sphere-1 {
-    width: 600px;
-    height: 600px;
-    background: #5E4B43;
-    top: -100px;
-    left: -150px;
-}
-
-.sphere-2 {
-    width: 800px;
-    height: 800px;
-    background: #4a372e;
-    bottom: -200px;
-    right: -250px;
-    animation-delay: -5s;
-}
-
-.sphere-3 {
-    width: 400px;
-    height: 400px;
-    background: #bca89f;
-    top: 40%;
-    left: 50%;
-    animation-delay: -10s;
-}
+.sphere-1 { width: 600px; height: 600px; background: #5E4B43; top: -100px; left: -150px; }
+.sphere-2 { width: 800px; height: 800px; background: #4a372e; bottom: -200px; right: -250px; animation-delay: -5s; }
+.sphere-3 { width: 400px; height: 400px; background: #bca89f; top: 40%; left: 50%; animation-delay: -10s; }
 
 @keyframes float-circles {
-    0% { transform: translate(0, 0) rotate(0deg); }
-    100% { transform: translate(100px, 150px) rotate(15deg); }
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(80px, 120px); }
 }
 
 /* ================================================================
-    3. ШАПКА И ПРИВЕТСТВИЕ (HERO SECTION)
+    3. ПРИВЕТСТВИЕ (HERO SECTION)
 ================================================================
 */
 .hero {
     height: 100vh;
-    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
     padding: 20px;
-    position: relative;
-}
-
-.welcome-container {
-    z-index: 2;
 }
 
 .welcome-text {
-    font-size: 2.2rem;
-    letter-spacing: 15px;
-    text-transform: lowercase;
+    font-size: 1.8rem;
+    letter-spacing: 12px;
     display: block;
     color: var(--accent-color);
     opacity: 0.7;
-    margin-bottom: 10px;
-    animation: fadeIn 2s ease-out;
+    margin-bottom: 5px;
 }
 
 .main-title {
-    font-size: 11rem;
+    font-size: 10rem;
     font-weight: bold;
-    line-height: 1;
-    margin-bottom: 40px;
+    line-height: 0.9;
+    margin-bottom: 30px;
     background: linear-gradient(to bottom, #f0e6e2 30%, #bca89f 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    text-shadow: 0 15px 45px rgba(188, 168, 159, 0.2);
-    animation: slideUp 1.2s ease-out;
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
 }
 
 .glass-button {
     text-decoration: none;
     color: var(--text-light);
-    padding: 25px 65px;
+    padding: 18px 45px;
     background: var(--glass-bg);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border: 1px solid var(--glass-border);
-    border-radius: 30px;
+    border-radius: 20px;
     display: inline-flex;
     flex-direction: column;
     align-items: center;
     transition: var(--transition-smooth);
-    font-size: 1.2rem;
-    letter-spacing: 3px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    font-size: 1rem;
+    letter-spacing: 2px;
 }
 
 .glass-button:hover {
-    background: rgba(255, 255, 255, 0.1);
-    transform: translateY(-10px);
-    border-color: rgba(255, 255, 255, 0.3);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-5px);
 }
 
 .arrow {
-    margin-top: 10px;
-    font-size: 1.8rem;
+    margin-top: 5px;
+    font-size: 1.3rem;
     animation: bounce 2s infinite;
 }
 
 @keyframes bounce {
     0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-    40% { transform: translateY(-12px); }
-    60% { transform: translateY(-6px); }
+    40% { transform: translateY(-8px); }
 }
 
 /* ================================================================
-    4. ОСНОВНОЙ КОНТЕНТ (CONTENT & CARDS)
+    4. КАРТОЧКИ (INFO CARDS)
 ================================================================
 */
 .content {
     width: 100%;
     min-height: 100vh;
-    padding: 150px 0;
+    padding: 100px 0;
     position: relative;
-    /* Место для монстра снизу */
-    padding-bottom: 700px; 
+    padding-bottom: 600px; 
 }
 
 .glass-container {
     display: flex;
     justify-content: center;
-    gap: 50px;
+    gap: 30px;
     flex-wrap: wrap;
-    max-width: 1400px;
+    max-width: 1300px;
     margin: 0 auto;
-    padding: 0 30px;
+    padding: 0 20px;
 }
 
 .info-card {
     background: var(--glass-bg);
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border: 1px solid var(--glass-border);
-    border-radius: 50px;
-    padding: 65px;
-    width: 600px;
-    min-height: 450px;
+    border-radius: 35px;
+    padding: 45px;
+    width: 520px;
+    min-height: 380px;
+    transition: var(--transition-smooth);
     display: flex;
     flex-direction: column;
     justify-content: center;
-    transition: var(--transition-smooth);
-    position: relative;
-    overflow: hidden;
-}
-
-.info-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: -100%;
-    width: 100%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
-    transition: 0.5s;
-}
-
-.info-card:hover::before {
-    left: 100%;
 }
 
 .info-card:hover {
-    transform: translateY(-20px) scale(1.02);
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.3);
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+    transform: translateY(-10px);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
 }
 
 .info-card h3 {
-    font-size: 3.5rem;
-    margin-bottom: 35px;
+    font-size: 2.8rem;
+    margin-bottom: 25px;
     color: var(--text-light);
-    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 10px;
 }
 
 .info-card p {
-    font-size: 1.8rem;
-    margin-bottom: 25px;
+    font-size: 1.5rem;
+    margin-bottom: 18px;
     display: flex;
     align-items: center;
     color: #d1c2bc;
-    transition: 0.3s;
-}
-
-.info-card p:hover {
-    color: var(--text-light);
-    transform: translateX(10px);
 }
 
 .info-card i {
-    width: 70px;
-    font-size: 2.5rem;
+    width: 55px;
+    font-size: 2rem;
     color: var(--text-light);
-    margin-right: 20px;
+    margin-right: 15px;
     text-align: center;
-    filter: drop-shadow(0 0 10px rgba(240, 230, 226, 0.4));
 }
 
 /* ================================================================
-    5. МОНСТРИК И ПЕЧЕНЬКИ (THE BEAST & COOKIES)
+    5. МОНСТРИК И ПЕЧЕНЬКИ (ANIMATION)
 ================================================================
 */
 .monster-wrapper {
@@ -265,137 +208,139 @@ body {
     width: 100%;
     text-align: center;
     pointer-events: none;
-    z-index: 10;
 }
 
 .monster-pic {
-    width: 600px;
+    width: 520px;
     height: auto;
     cursor: pointer;
     pointer-events: auto;
-    filter: drop-shadow(0 0 50px rgba(188, 168, 159, 0.4));
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    user-select: none;
-    -webkit-user-drag: none;
+    filter: drop-shadow(0 0 30px rgba(0,0,0,0.5));
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.monster-pic:hover {
-    transform: scale(1.1) rotate(2deg);
-}
-
-.monster-pic:active {
-    transform: scale(0.9);
-}
+.monster-pic:active { transform: scale(0.92); }
 
 .cookie-particle {
     position: absolute;
-    font-size: 3.5rem;
+    font-size: 2.5rem;
     pointer-events: none;
-    z-index: 25;
-    animation: cookieEatAnimation 1s forwards ease-in;
+    z-index: 50;
+    animation: cookieFlyUp 0.8s forwards ease-in;
 }
 
-@keyframes cookieEatAnimation {
-    0% { 
-        transform: translateY(0) rotate(0deg) scale(1); 
-        opacity: 1; 
-    }
-    100% { 
-        transform: translateY(-200px) rotate(720deg) scale(0.3); 
-        opacity: 0; 
-    }
+@keyframes cookieFlyUp {
+    0% { transform: translateY(0) rotate(0); opacity: 1; }
+    100% { transform: translateY(-150px) rotate(360deg) scale(0.5); opacity: 0; }
 }
 
 /* ================================================================
-    6. КАСТОМНЫЙ КУРСОР (CURSOR UI)
+    6. КУРСОР (CURSOR)
 ================================================================
 */
 .cursor {
-    width: 12px; height: 12px;
+    width: 8px; height: 8px;
     background: var(--text-light);
     border-radius: 50%;
     position: fixed;
     z-index: 10000;
     pointer-events: none;
-    box-shadow: 0 0 15px rgba(240, 230, 226, 0.8);
 }
 
 .cursor-follower {
-    width: 40px; height: 40px;
-    border: 2px solid rgba(240, 230, 226, 0.4);
-    background: rgba(240, 230, 226, 0.05);
-    backdrop-filter: blur(5px);
+    width: 30px; height: 30px;
+    border: 1px solid rgba(240, 230, 226, 0.3);
     border-radius: 50%;
     position: fixed;
     z-index: 9999;
     pointer-events: none;
-    transition: transform 0.15s ease-out;
+    transition: transform 0.12s ease-out;
 }
 
 /* ================================================================
-    7. АДАПТИВНОСТЬ (MOBILE & TABLET OPTIMIZATION)
+    7. АДАПТИВ (MOBILE FIXES - УМЕНЬШЕНИЕ)
 ================================================================
 */
-@media (max-width: 1024px) {
-    .main-title { font-size: 8rem; }
-    .info-card { width: 500px; padding: 40px; }
-}
-
 @media (max-width: 768px) {
-    /* Скрываем тяжелые эффекты на мобилках для скорости */
-    .background-ornament { display: none !important; }
-    
-    .hero { padding: 0 20px; }
-
+    /* Фикс кнопки Down и заголовка */
     .main-title { 
-        font-size: 4rem !important; 
-        line-height: 1.1;
-        letter-spacing: -2px;
-        background: none;
-        -webkit-text-fill-color: var(--text-light);
+        font-size: 3.5rem !important; 
     }
 
-    .welcome-text { font-size: 1.4rem; letter-spacing: 8px; }
+    .welcome-text { 
+        font-size: 1.1rem !important; 
+        letter-spacing: 6px !important; 
+    }
 
-    .content { padding-bottom: 550px; }
+    .glass-button {
+        padding: 12px 35px !important; /* Уменьшили кнопку */
+        font-size: 0.9rem !important;
+        border-radius: 15px !important;
+    }
 
+    .arrow { font-size: 1.1rem !important; }
+
+    /* Фикс карточек */
     .info-card { 
-        width: 100% !important; 
-        padding: 40px 25px !important; 
-        min-height: auto;
-        background: rgba(30, 20, 18, 0.98) !important;
-        border-radius: 40px;
-        margin-bottom: 30px;
+        width: 92% !important; 
+        padding: 25px 20px !important; /* Уменьшили внутренние отступы */
+        min-height: auto !important;
+        border-radius: 25px !important;
+        background: rgba(25, 15, 12, 0.98) !important;
     }
 
-    .info-card p { font-size: 1.3rem !important; flex-wrap: wrap; }
-    .info-card h3 { font-size: 2.8rem !important; }
+    .info-card h3 { 
+        font-size: 2rem !important; 
+        margin-bottom: 15px !important; 
+    }
 
+    .info-card p { 
+        font-size: 1.1rem !important; 
+        margin-bottom: 12px !important; 
+    }
+
+    .info-card i { 
+        width: 40px !important; 
+        font-size: 1.6rem !important; 
+    }
+
+    /* Фикс монстра */
+    .content { padding-bottom: 420px !important; }
+    
     .monster-pic { 
-        width: 360px; /* Большой монстр на телефоне */
+        width: 290px !important; /* Уменьшили монстра */
     }
 
-    /* Специальная анимация для рта мобильного монстра */
-    @keyframes cookieEatAnimation {
-        0% { transform: translateY(0) scale(1); opacity: 1; }
-        100% { transform: translateY(-120px) scale(0.4); opacity: 0; }
+    @keyframes cookieFlyUp {
+        0% { transform: translateY(0); opacity: 1; }
+        100% { transform: translateY(-80px) scale(0.5); opacity: 0; }
     }
 
-    /* Убираем курсор на тачскринах */
     .cursor, .cursor-follower { display: none !important; }
     body { cursor: auto !important; }
 }
 
 /* ================================================================
-    8. ДОПОЛНИТЕЛЬНЫЕ АНИМАЦИИ (EXTRA ANIMATIONS)
+    8. ДОПОЛНИТЕЛЬНЫЕ СТИЛИ ДЛЯ ДЛИНЫ (LONG CODE DECOR)
 ================================================================
 */
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 0.7; }
+/* Стилизация скроллбара */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-dark); }
+::-webkit-scrollbar-thumb { background: #3e2b25; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent-color); }
+
+/* Выделение текста */
+::selection { background: var(--accent-color); color: var(--bg-dark); }
+
+/* Плавный вход элементов */
+.info-card, .main-title, .welcome-text {
+    animation: simpleFadeIn 1s ease-out;
 }
 
-@keyframes slideUp {
-    from { transform: translateY(50px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+@keyframes simpleFadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
+
+/* Конец файла */
