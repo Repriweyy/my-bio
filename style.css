@@ -108,7 +108,8 @@ body {
     width: 100%;
     min-height: 100vh;
     padding: 100px 0;
-    position: relative; /* Чтобы монстрик стоял ровно */
+    position: relative;
+    padding-bottom: 350px; /* Место для большого монстрика */
 }
 
 .glass-container {
@@ -170,14 +171,16 @@ body {
 /* --- ПОЗИЦИОНИРОВАНИЕ МОНСТРИКА --- */
 .monster-pic {
     position: absolute;
-    bottom: -100px;
+    bottom: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 400px;
+    width: 450px; /* Увеличили размер на ПК */
     height: auto;
     z-index: -1;
-    opacity: 0.9;
+    opacity: 1;
     pointer-events: none;
+    /* Убираем возможные ореолы вокруг прозрачности */
+    background: transparent;
     filter: drop-shadow(0 0 30px rgba(188, 168, 159, 0.2));
 }
 
@@ -203,7 +206,7 @@ body {
     transition: transform 0.1s ease-out;
 }
 
-/* ИСПРАВЛЕНИЕ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ (iPhone Fix) */
+/* ИСПРАВЛЕНИЕ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ */
 @media (max-width: 768px) {
     .background-ornament {
         display: none !important;
@@ -223,23 +226,32 @@ body {
         letter-spacing: 4px !important;
     }
 
-    .glass-button {
-        padding: 15px 40px !important;
-    }
-
     .info-card {
         width: 100% !important;
         padding: 25px !important;
-        margin-bottom: 20px;
+        margin-bottom: 30px;
         min-height: auto;
         background: rgba(30, 20, 18, 0.95) !important;
         backdrop-filter: none !important;
         -webkit-backdrop-filter: none !important;
     }
 
+    /* ФИКС ТЕКСТА: Чтобы WeChat не ломался */
+    .info-card p {
+        font-size: 1.1rem !important;
+        flex-wrap: wrap;
+    }
+
+    .info-card h3 { font-size: 2rem !important; }
+
+    /* МОНСТРИК НА МОБИЛКЕ: Больше и выше */
     .monster-pic {
-        width: 220px;
-        bottom: -50px;
+        width: 280px; 
+        bottom: 40px;
+    }
+
+    .content {
+        padding-bottom: 250px;
     }
 
     .cursor, .cursor-follower {
