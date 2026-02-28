@@ -77,7 +77,6 @@ body {
     font-weight: bold;
     line-height: 1;
     margin: 20px 0;
-    /* ПУНКТ 2: ГРАДИЕНТНЫЙ ТЕКСТ */
     background: linear-gradient(to bottom, #f0e6e2 30%, #bca89f 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -109,6 +108,7 @@ body {
     width: 100%;
     min-height: 100vh;
     padding: 100px 0;
+    position: relative; /* Чтобы монстрик стоял ровно */
 }
 
 .glass-container {
@@ -136,7 +136,6 @@ body {
     transition: all 0.3s ease;
 }
 
-/* ПУНКТ 3: СВЕЧЕНИЕ ПРИ НАВЕДЕНИИ */
 .info-card:hover {
     transform: translateY(-10px);
     border-color: rgba(255, 255, 255, 0.3);
@@ -168,7 +167,21 @@ body {
     color: #f0e6e2;
 }
 
-/* --- КАСТОМНЫЙ КУРСОР --- */
+/* --- ПОЗИЦИОНИРОВАНИЕ МОНСТРИКА --- */
+.monster-pic {
+    position: absolute;
+    bottom: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 400px;
+    height: auto;
+    z-index: -1;
+    opacity: 0.9;
+    pointer-events: none;
+    filter: drop-shadow(0 0 30px rgba(188, 168, 159, 0.2));
+}
+
+/* --- КУРСОР --- */
 .cursor {
     width: 8px; height: 8px;
     background: #f0e6e2;
@@ -192,7 +205,6 @@ body {
 
 /* ИСПРАВЛЕНИЕ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ (iPhone Fix) */
 @media (max-width: 768px) {
-    /* Отключаем сферы на айфоне, чтобы убрать белый экран */
     .background-ornament {
         display: none !important;
     }
@@ -202,7 +214,6 @@ body {
         letter-spacing: -2px;
         margin: 10px 0;
         white-space: nowrap;
-        /* Убираем градиент для стабильности, если нужно, или оставляем */
         -webkit-text-fill-color: initial; 
         color: #f0e6e2;
     }
@@ -221,14 +232,15 @@ body {
         padding: 25px !important;
         margin-bottom: 20px;
         min-height: auto;
-        /* Делаем фон плотнее для читаемости */
         background: rgba(30, 20, 18, 0.95) !important;
         backdrop-filter: none !important;
         -webkit-backdrop-filter: none !important;
     }
 
-    .info-card h3 { font-size: 2rem !important; }
-    .info-card p { font-size: 1.2rem; }
+    .monster-pic {
+        width: 220px;
+        bottom: -50px;
+    }
 
     .cursor, .cursor-follower {
         display: none !important;
