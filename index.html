@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
     <div class="ornament sphere-1"></div>
@@ -52,7 +55,7 @@
 
                 <div class="glass-card status-card">
                     <h3>Status</h3>
-                    <p id="status-text-display" class="quote">Напишите статус в админ-панели...</p>
+                    <p id="status-text-display" class="quote">Загрузка статуса из базы...</p>
                     <div class="location-badge">
                         <i class="fas fa-location-dot"></i> Russia, Earth
                     </div>
@@ -69,11 +72,11 @@
                     <div class="admin-grid">
                         <div class="admin-inputs">
                             <h4 id="admin-panel-title">Управление проектами</h4>
-                            <input type="hidden" id="edit-index" value="-1">
+                            <input type="hidden" id="edit-id" value="">
                             <input type="text" id="p-name" placeholder="Название проекта">
                             <textarea id="p-about" placeholder="Описание проекта..."></textarea>
                             <button onclick="saveProject()" id="submit-project-btn" class="action-btn">Опубликовать проект</button>
-                            <button onclick="cancelEdit()" id="cancel-edit-btn" class="close-link hidden" style="margin-top:5px; margin-bottom:15px; display:block;">Отменить редактирование</button>
+                            <button onclick="cancelEdit()" id="cancel-edit-btn" class="close-link hidden" style="margin-top:5px; margin-bottom:15px; display:block;">Отменить</button>
                             
                             <h4 style="margin-top: 30px;">Редактировать статус</h4>
                             <input type="text" id="status-input" placeholder="Введите новый статус...">
@@ -83,7 +86,7 @@
                             <div class="file-zone">
                                 <label for="p-file" class="file-label"><i class="fas fa-paperclip"></i> Прикрепить файл</label>
                                 <input type="file" id="p-file" accept="image/*" onchange="previewFile()">
-                                <p id="file-status-text" style="font-size: 0.8rem; opacity: 0.5; margin-top: 5px;">Файл не выбран</p>
+                                <p id="file-status-text">Файл не выбран</p>
                             </div>
                             <div id="file-preview-container" class="preview-box hidden">
                                 <img id="img-preview" src="" alt="preview">
@@ -92,7 +95,7 @@
                     </div>
                 </div>
 
-                <div id="projects-grid" class="projects-grid"></div>
+                <div id="projects-grid" class="projects-grid"><p class="empty-msg">Загрузка проектов из базы данных...</p></div>
             </section>
         </div>
     </main>
@@ -108,21 +111,28 @@
 
     <script src="cursor.js"></script>
     <script>
-        const toggleModal = (id) => document.getElementById(id).classList.toggle('hidden');
+        // === НАСТРОЙКА БАЗЫ ДАННЫХ FIREBASE ===
+        // Вставь сюда свои данные из панели Firebase (Project Settings -> Web App)
+        const firebaseConfig = {
+            apiKey: "ТВОЙ_API_KEY",
+            authDomain: "ТВОЙ_PROJECT_ID.firebaseapp.com",
+            projectId: "ТВОЙ_PROJECT_ID",
+            storageBucket: "ТВОЙ_PROJECT_ID.appspot.com",
+            messagingSenderId: "ТВОЙ_ОТПРАВИТЕЛЬ",
+            appId: "ТВОЙ_APP_ID"
+        };
+        
+        // Инициализация
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
 
-        // Проверка авторизации при загрузке
-        function isAuthorized() {
-            return sessionStorage.getItem('repriwey_auth') === 'true';
-        }
+        const toggleModal = (id) => document.getElementById(id).classList.toggle('hidden');
+        function isAuthorized() { return sessionStorage.getItem('repriwey_auth') === 'true'; }
 
         // Логика авторизации
         document.getElementById('admin-trigger').onclick = () => {
-            if (isAuthorized()) {
-                toggleModal('admin-panel');
-                render(); // Перерисовываем, чтобы показать кнопки управления, если панель открылась
-            } else {
-                toggleModal('login-modal');
-            }
+            if (isAuthorized()) { toggleModal('admin-panel'); syncRender(); } 
+            else { toggleModal('login-modal'); }
         };
 
         function checkAuth() {
@@ -130,27 +140,32 @@
             const pass = document.getElementById('login-pass').value;
             if(user === 'Repriwey' && pass === 'Repriwey.io.com') {
                 sessionStorage.setItem('repriwey_auth', 'true');
-                toggleModal('login-modal'); 
-                toggleModal('admin-panel');
-                render();
+                toggleModal('login-modal'); toggleModal('admin-panel');
+                syncRender();
             } else { alert('Доступ закрыт!'); }
         }
 
-        // Логика динамического статуса
-        let currentStatus = localStorage.getItem('repriwey_status') || "«Создаю цифровые миры с упором на премиальную эстетику и матовое стекло.»";
-        document.getElementById('status-text-display').innerText = currentStatus;
+        // === СИНХРОНИЗАЦИЯ СТАТУСА С БАЗОЙ ===
+        db.collection("site_data").doc("status").onSnapshot((doc) => {
+            if (doc.exists) {
+                document.getElementById('status-text-display').innerText = doc.data().text;
+            } else {
+                document.getElementById('status-text-display').innerText = "«Создаю цифровые миры с упором на премиальную эстетику и матовое стекло.»";
+            }
+        });
 
         function updateStatus() {
             const newStatus = document.getElementById('status-input').value;
-            if(newStatus) {
-                localStorage.setItem('repriwey_status', newStatus);
-                document.getElementById('status-text-display').innerText = newStatus;
-                document.getElementById('status-input').value = '';
-                toggleModal('admin-panel');
+            if(newStatus && isAuthorized()) {
+                db.collection("site_data").doc("status").set({ text: newStatus })
+                .then(() => {
+                    document.getElementById('status-input').value = '';
+                    toggleModal('admin-panel');
+                });
             }
         }
 
-        // Предпросмотр прикрепляемого изображения
+        // Предпросмотр файлов
         function previewFile() {
             const file = document.getElementById('p-file').files[0];
             const textText = document.getElementById('file-status-text');
@@ -165,63 +180,70 @@
             }
         }
 
-        // Рендеринг и сохранение проектов
-        let vault = JSON.parse(localStorage.getItem('repriwey_vault')) || [];
-        
-        function render() {
+        // === СИНХРОНИЗАЦИЯ ПРОЕКТОВ С БАЗОЙ ===
+        let localVault = [];
+        db.collection("projects").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
+            localVault = [];
+            snapshot.forEach((doc) => {
+                localVault.push({ id: doc.id, ...doc.data() });
+            });
+            syncRender();
+        });
+
+        function syncRender() {
             const grid = document.getElementById('projects-grid');
             const auth = isAuthorized();
             
-            grid.innerHTML = vault.length ? vault.map((p, i) => `
+            grid.innerHTML = localVault.length ? localVault.map((p) => `
                 <div class="glass-card project-item scale-up">
                     ${p.img ? `<img src="${p.img}" class="p-img">` : ''}
                     <h4>${p.name}</h4>
                     <p>${p.about}</p>
                     ${auth ? `
                         <div class="admin-actions" style="margin-top: 15px; display: flex; gap: 10px;">
-                            <button class="edit-btn" onclick="editProject(${i})">Edit</button>
-                            <button class="del-btn" onclick="delProject(${i})">Remove</button>
+                            <button class="edit-btn" onclick="editProject('${p.id}')">Edit</button>
+                            <button class="del-btn" onclick="delProject('${p.id}')">Remove</button>
                         </div>
                     ` : ''}
                 </div>
             `).join('') : '<p class="empty-msg">Пока нет активных проектов...</p>';
         }
 
-        // Добавление или сохранение отредактированного проекта
+        // Сохранение или обновление проекта в Firebase
         async function saveProject() {
             const name = document.getElementById('p-name').value;
             const about = document.getElementById('p-about').value;
-            const editIndex = parseInt(document.getElementById('edit-index').value);
+            const editId = document.getElementById('edit-id').value;
             let img = document.getElementById('img-preview').src || "";
 
-            if(name && about) {
+            if(name && about && isAuthorized()) {
                 const projectData = {
-                    name, 
-                    about, 
-                    img: (img.startsWith('data:') || img.startsWith('http')) ? img : ""
+                    name: name,
+                    about: about,
+                    img: img.startsWith('data:') ? img : (editId ? img : ""),
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 };
 
-                if (editIndex > -1) {
-                    // Если картинку не меняли и превью пустое, оставляем старую картинку
-                    if (!img && vault[editIndex].img) {
-                        projectData.img = vault[editIndex].img;
-                    }
-                    vault[editIndex] = projectData;
+                if (editId) {
+                    // Обновление существующего
+                    db.collection("projects").doc(editId).update({
+                        name: projectData.name,
+                        about: projectData.about,
+                        img: projectData.img
+                    }).then(() => { resetForm(); toggleModal('admin-panel'); });
                 } else {
-                    vault.push(projectData);
+                    // Создание нового
+                    db.collection("projects").add(projectData)
+                    .then(() => { resetForm(); toggleModal('admin-panel'); });
                 }
-
-                localStorage.setItem('repriwey_vault', JSON.stringify(vault));
-                render();
-                resetForm();
-                toggleModal('admin-panel');
             }
         }
 
-        // Заполнение формы для редактирования
-        function editProject(i) {
-            const p = vault[i];
-            document.getElementById('edit-index').value = i;
+        function editProject(id) {
+            const p = localVault.find(item => item.id === id);
+            if(!p) return;
+            
+            document.getElementById('edit-id').value = p.id;
             document.getElementById('p-name').value = p.name;
             document.getElementById('p-about').value = p.about;
             
@@ -232,27 +254,19 @@
             if(p.img) {
                 document.getElementById('img-preview').src = p.img;
                 document.getElementById('file-preview-container').classList.remove('hidden');
-                document.getElementById('file-status-text').innerText = 'Старое изображение сохранено';
+                document.getElementById('file-status-text').innerText = 'Изображение загружено';
             } else {
                 document.getElementById('img-preview').src = '';
                 document.getElementById('file-preview-container').classList.add('hidden');
-                document.getElementById('file-status-text').innerText = 'Файл не выбран';
             }
 
-            // Скроллим к админ-панели для удобства, если она открыта
-            const panel = document.getElementById('admin-panel');
-            if(panel.classList.contains('hidden')) {
-                panel.classList.remove('hidden');
-            }
-            panel.scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('admin-panel').scrollIntoView({ behavior: 'smooth' });
         }
 
-        function cancelEdit() {
-            resetForm();
-        }
+        function cancelEdit() { resetForm(); }
 
         function resetForm() {
-            document.getElementById('edit-index').value = "-1";
+            document.getElementById('edit-id').value = "";
             document.getElementById('p-name').value = '';
             document.getElementById('p-about').value = '';
             document.getElementById('p-file').value = '';
@@ -264,17 +278,13 @@
             document.getElementById('file-preview-container').classList.add('hidden');
         }
 
-        function delProject(i) {
-            if(confirm('Удалить проект?')) {
-                vault.splice(i,1);
-                localStorage.setItem('repriwey_vault', JSON.stringify(vault));
-                render();
-                if(parseInt(document.getElementById('edit-index').value) === i) {
-                    resetForm();
-                }
+        function delProject(id) {
+            if(confirm('Удалить проект из базы данных?')) {
+                db.collection("projects").doc(id).delete().then(() => {
+                    if(document.getElementById('edit-id').value === id) { resetForm(); }
+                });
             }
         }
-        render();
     </script>
 </body>
 </html>

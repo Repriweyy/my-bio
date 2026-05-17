@@ -16,9 +16,10 @@
     margin: 0; 
     padding: 0; 
     box-sizing: border-box; 
-    cursor: none !important; /* Курсор скрыт для работы кастомного */
+    cursor: none !important;
     user-select: none; 
     outline: none; 
+    -webkit-font-smoothing: antialiased;
 }
 
 html { 
@@ -29,11 +30,11 @@ html {
 body { 
     background: var(--bg); 
     color: var(--accent); 
-    font-family: "Comic Sans MS", cursive; /* Тот самый бабл-вайб для контента */
+    font-family: "Comic Sans MS", "Comic Sans", cursive !important; /* Принудительный бабл-шрифт везде */
     line-height: 1.6; 
 }
 
-/* КУРСОР (ОДНА ТОЧКА С МАКСИМАЛЬНЫМ Z-INDEX) */
+/* КУРСОР */
 .cursor {
     width: 10px; 
     height: 10px; 
@@ -58,23 +59,24 @@ body {
 .sphere-1 { width: 700px; height: 700px; background: var(--mid); top: -150px; left: -150px; }
 .sphere-2 { width: 900px; height: 900px; background: var(--dark); bottom: -200px; right: -200px; }
 
-/* HERO СЕКЦИЯ (СТАРЫЙ ВИД НАДПИСИ + ИДЕАЛЬНЫЙ ХВОСТ БУКВЫ Y) */
+/* HERO СЕКЦИЯ */
 .hero { 
     height: 100vh; 
     display: flex; 
     align-items: center; 
     justify-content: center; 
     text-align: center; 
+    padding: 0 20px;
 }
 
 .main-title { 
-    font-size: clamp(4.5rem, 15vw, 11rem); 
+    font-size: clamp(3.5rem, 15vw, 11rem); 
     font-weight: 700;
     background: linear-gradient(to bottom, #ffffff 40%, var(--accent));
     -webkit-background-clip: text; 
     -webkit-text-fill-color: transparent;
     filter: drop-shadow(0 25px 50px rgba(0,0,0,0.7));
-    line-height: 1.4; /* Фикс: хвост 'y' больше никогда не срежет */
+    line-height: 1.4; 
     padding-bottom: 20px;
 }
 
@@ -107,6 +109,7 @@ body {
 .glass-card {
     background: var(--glass); 
     backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
     border: 2px solid var(--border); 
     border-radius: 50px; 
     padding: 50px;
@@ -143,7 +146,7 @@ body {
 #img-preview { width: 100%; height: 100%; object-fit: cover; }
 
 /* ОКНО ВХОДА */
-.modal { position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 9999990; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(25px); }
+.modal { position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 9999990; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(25px); padding: 20px; }
 .login-box { width: 420px; text-align: center; border: 2px solid var(--border); }
 .login-inputs input { width: 100%; padding: 18px; background: rgba(0, 0, 0, 0.5); border: 1px solid var(--border); border-radius: 18px; color: #fff; margin-bottom: 15px; }
 
@@ -152,10 +155,11 @@ body {
 .close-link { background: none; border: none; color: var(--accent); opacity: 0.5; margin-top: 25px; text-decoration: underline; font-family: inherit; }
 
 /* РАЗДЕЛ АКТИВНЫХ ПРОЕКТОВ */
-.section-header { display: flex; justify-content: space-between; align-items: center; margin-top: 100px; }
+.projects-section { margin-top: 100px; }
+.section-header { display: flex; justify-content: space-between; align-items: center; }
 .section-header h2 { font-size: 3.5rem; color: var(--text); font-family: 'Montserrat', sans-serif; }
 .admin-link { background: transparent; border: 1px dashed var(--accent); color: var(--accent); padding: 10px 20px; border-radius: 12px; opacity: 0.5; font-family: inherit; }
-.projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 40px; margin-top: 40px; }
+.projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 40px; margin-top: 40px; }
 .p-img { width: 100%; height: 220px; object-fit: cover; border-radius: 25px; margin-bottom: 20px; border: 1px solid var(--border); }
 
 /* КНОПКИ УПРАВЛЕНИЯ ПОСТАМИ */
@@ -172,7 +176,7 @@ body {
 @keyframes fadeIn { from { opacity: 0; transform: translateY(25px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes scaleUp { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
 
-.footer { text-align: center; padding: 8px 0 60px 0; opacity: 0.5; }
+.footer { text-align: center; padding: 60px 0; opacity: 0.5; }
 .social-icons { display: flex; justify-content: center; gap: 30px; margin-top: 15px; font-size: 2rem; }
 .social-icons a { color: var(--accent); }
 
@@ -181,9 +185,33 @@ body {
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: var(--dark); border-radius: 10px; }
 
-@media (max-width: 1000px) {
-    .grid-layout, .admin-grid { grid-template-columns: 1fr; }
-    .main-title { font-size: 4.5rem; }
+/* ================================================================
+    13. ЖЕСТКАЯ ОПТИМИЗАЦИЯ ПОД МОБИЛЬНЫЕ УСТРОЙСТВА (АДАПТИВ)
+================================================================ */
+@media (max-width: 1024px) {
+    .container { padding: 0 20px; }
+    .grid-layout { grid-template-columns: 1fr; gap: 30px; }
+    .admin-grid { grid-template-columns: 1fr; gap: 30px; }
+    .glass-card { padding: 30px; border-radius: 35px; }
+    .main-title { font-size: 5.5rem; }
+    .card-head h3 { font-size: 2.2rem; margin-bottom: 25px; }
+    .quote { font-size: 1.8rem; }
+    .projects-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+    
+    /* Отключение кастомного курсора на сенсорных экранах */
     .cursor { display: none !important; }
     * { cursor: auto !important; }
+}
+
+@media (max-width: 600px) {
+    .main-title { font-size: 3.5rem; line-height: 1.3; }
+    .welcome-label { font-size: 1rem; letter-spacing: 10px; }
+    .scroll-btn { padding: 15px 35px; font-size: 1rem; }
+    .section-header h2 { font-size: 2.2rem; }
+    .admin-link { padding: 8px 15px; font-size: 0.85rem; }
+    .val p { font-size: 1.1rem; }
+    .val span { font-size: 0.7rem; letter-spacing: 2px; }
+    .data-row { gap: 15px; }
+    .data-row i { font-size: 1.5rem; width: 25px; }
+    .login-box { padding: 35px 20px !important; }
 }
