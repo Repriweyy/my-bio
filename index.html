@@ -3,89 +3,278 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Repriwey's BIO</title>
+    <title>Repriwey's BIO | Digital Vault</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><defs><linearGradient id=%22g%22 x1=%220%%22 y1=%220%%22 x2=%22100%%22 y2=%22100%%22><stop offset=%220%%22 style=%22stop-color:%235E4B43;stop-opacity:1%22 /><stop offset=%22100%%22 style=%22stop-color:%232E1F1B;stop-opacity:1%22 /></linearGradient></defs><circle cx=%2250%22 cy=%2250%22 r=%2248%22 fill=%22url(%23g)%22 stroke=%22%23bca89f%22 stroke-width=%224%22/><text y=%2250%%22 x=%2250%%22 dominant-baseline=%22central%22 text-anchor=%22middle%22 font-size=%2255%22 fill=%22%23bca89f%22 font-family=%22Arial, sans-serif%22 font-weight=%22bold%22>R</text></svg>">
 </head>
 <body>
-    <div class="background-ornament sphere-1"></div>
-    <div class="background-ornament sphere-2"></div>
-    <div class="background-ornament sphere-3"></div>
+    <div class="ornament sphere-1"></div>
+    <div class="ornament sphere-2"></div>
+
     <div class="cursor"></div>
-    <div class="cursor-follower"></div>
+
+    <div id="login-modal" class="modal hidden">
+        <div class="glass-card login-box fade-in">
+            <h3>Authorization</h3>
+            <div class="login-inputs">
+                <input type="text" id="login-user" placeholder="Login">
+                <input type="password" id="login-pass" placeholder="Password">
+                <button onclick="checkAuth()" class="action-btn">Войти</button>
+                <button class="close-link" onclick="toggleModal('login-modal')">Отмена</button>
+            </div>
+        </div>
+    </div>
 
     <header class="hero">
-        <div class="welcome-container">
-            <span class="welcome-text">welcome</span>
+        <div class="hero-inner fade-in">
+            <span class="welcome-label">welcome</span>
             <h1 class="main-title">Repriwey</h1>
-            <a href="#about" class="glass-button">
-                Down <span class="arrow">↓</span>
-            </a>
+            <a href="#vault" class="scroll-btn">Down ↓</a>
         </div>
     </header>
 
-    <main class="content" id="about">
-        <div class="glass-container">
-            <div class="info-card">
-                <p><i class="fab fa-telegram"></i> <strong>Telegram:</strong> @Repriweyy</p>
-                <p><i class="fab fa-discord"></i> <strong>Discord:</strong> repriweyy</p>
-                <p><i class="fab fa-weixin"></i> <strong>WeChat ID:</strong> Repriwey</p>
-                <p>
-                    <i class="fas fa-globe-europe"></i> 
-                    <strong>Country:</strong> Russia 
-                    <img src="https://flagcdn.com/ru.svg" width="30" alt="Russia" style="vertical-align: middle; margin-left: 5px; border-radius: 2px;">
-                </p>
-                <p><i class="fas fa-birthday-cake"></i> <strong>Birthday:</strong> 5 Nov</p>
-            </div>
+    <main class="main-content" id="vault">
+        <div class="container">
+            
+            <section class="grid-layout fade-in">
+                <div class="glass-card profile-card">
+                    <div class="card-head">
+                        <h3><i class="fas fa-fingerprint"></i> Profile</h3>
+                    </div>
+                    <div class="user-data">
+                        <div class="data-row"><i class="fas fa-user"></i><div class="val"><span>Name</span><p>Платон</p></div></div>
+                        <div class="data-row"><i class="fab fa-telegram"></i><div class="val"><span>Telegram</span><p>@Repriweyy</p></div></div>
+                        <div class="data-row"><i class="fab fa-discord"></i><div class="val"><span>Discord</span><p>repriweyy</p></div></div>
+                        <div class="data-row"><i class="fas fa-envelope"></i><div class="val"><span>Email</span><p>Repriweyrepa@gmail.com</p></div></div>
+                    </div>
+                </div>
 
-            <div class="info-card">
-                <h3>Activity</h3>
-                <p>омайгад</p>
-            </div>
-        </div>
+                <div class="glass-card status-card">
+                    <h3>Status</h3>
+                    <p id="status-text-display" class="quote">Напишите статус в админ-панели...</p>
+                    <div class="location-badge">
+                        <i class="fas fa-location-dot"></i> Russia, Earth
+                    </div>
+                </div>
+            </section>
 
-        <div class="monster-wrapper">
-            <img src="monster.png" class="monster-pic" id="monster-btn" alt="Cookie Monster">
+            <section class="projects-section fade-in">
+                <div class="section-header">
+                    <h2>Active Projects</h2>
+                    <button id="admin-trigger" class="admin-link">Admin Mode</button>
+                </div>
+
+                <div id="admin-panel" class="glass-card admin-panel hidden scale-up">
+                    <div class="admin-grid">
+                        <div class="admin-inputs">
+                            <h4 id="admin-panel-title">Управление проектами</h4>
+                            <input type="hidden" id="edit-index" value="-1">
+                            <input type="text" id="p-name" placeholder="Название проекта">
+                            <textarea id="p-about" placeholder="Описание проекта..."></textarea>
+                            <button onclick="saveProject()" id="submit-project-btn" class="action-btn">Опубликовать проект</button>
+                            <button onclick="cancelEdit()" id="cancel-edit-btn" class="close-link hidden" style="margin-top:5px; margin-bottom:15px; display:block;">Отменить редактирование</button>
+                            
+                            <h4 style="margin-top: 30px;">Редактировать статус</h4>
+                            <input type="text" id="status-input" placeholder="Введите новый статус...">
+                            <button onclick="updateStatus()" class="action-btn">Сохранить статус</button>
+                        </div>
+                        <div class="admin-sidebar">
+                            <div class="file-zone">
+                                <label for="p-file" class="file-label"><i class="fas fa-paperclip"></i> Прикрепить файл</label>
+                                <input type="file" id="p-file" accept="image/*" onchange="previewFile()">
+                                <p id="file-status-text" style="font-size: 0.8rem; opacity: 0.5; margin-top: 5px;">Файл не выбран</p>
+                            </div>
+                            <div id="file-preview-container" class="preview-box hidden">
+                                <img id="img-preview" src="" alt="preview">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="projects-grid" class="projects-grid"></div>
+            </section>
         </div>
     </main>
 
+    <footer class="footer">
+        <p>Get in touch</p>
+        <div class="social-icons">
+            <a href="https://t.me/Repriweyy"><i class="fab fa-telegram"></i></a>
+            <a href="mailto:Repriweyrepa@gmail.com"><i class="fas fa-envelope"></i></a>
+            <a href="https://github.com/Repriwey"><i class="fab fa-github"></i></a>
+        </div>
+    </footer>
+
+    <script src="cursor.js"></script>
     <script>
-        const cursor = document.querySelector('.cursor');
-        const follower = document.querySelector('.cursor-follower');
+        const toggleModal = (id) => document.getElementById(id).classList.toggle('hidden');
 
-        document.addEventListener('mousemove', e => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-            follower.style.left = e.clientX - 11 + 'px';
-            follower.style.top = e.clientY - 11 + 'px';
-        });
+        // Проверка авторизации при загрузке
+        function isAuthorized() {
+            return sessionStorage.getItem('repriwey_auth') === 'true';
+        }
 
-        const monster = document.getElementById('monster-btn');
-        monster.addEventListener('click', (e) => {
-            for(let i = 0; i < 3; i++) {
-                const cookie = document.createElement('div');
-                cookie.innerText = '🍪';
-                cookie.className = 'cookie-particle';
-                // Появление печенек в районе рта (центр монстра)
-                cookie.style.left = `calc(50% + ${Math.random() * 40 - 20}px)`;
-                cookie.style.bottom = '180px'; 
-                monster.parentElement.appendChild(cookie);
-                setTimeout(() => cookie.remove(), 1000);
+        // Логика авторизации
+        document.getElementById('admin-trigger').onclick = () => {
+            if (isAuthorized()) {
+                toggleModal('admin-panel');
+                render(); // Перерисовываем, чтобы показать кнопки управления, если панель открылась
+            } else {
+                toggleModal('login-modal');
             }
-        });
+        };
 
-        const links = document.querySelectorAll('a, .info-card, #monster-btn');
-        links.forEach(link => {
-            link.addEventListener('mouseenter', () => {
-                follower.style.transform = 'scale(2.5)';
-                follower.style.background = 'rgba(255, 255, 255, 0.2)';
-            });
-            link.addEventListener('mouseleave', () => {
-                follower.style.transform = 'scale(1)';
-                follower.style.background = 'rgba(255, 255, 255, 0.1)';
-            });
-        });
+        function checkAuth() {
+            const user = document.getElementById('login-user').value;
+            const pass = document.getElementById('login-pass').value;
+            if(user === 'Repriwey' && pass === 'Repriwey.io.com') {
+                sessionStorage.setItem('repriwey_auth', 'true');
+                toggleModal('login-modal'); 
+                toggleModal('admin-panel');
+                render();
+            } else { alert('Доступ закрыт!'); }
+        }
+
+        // Логика динамического статуса
+        let currentStatus = localStorage.getItem('repriwey_status') || "«Создаю цифровые миры с упором на премиальную эстетику и матовое стекло.»";
+        document.getElementById('status-text-display').innerText = currentStatus;
+
+        function updateStatus() {
+            const newStatus = document.getElementById('status-input').value;
+            if(newStatus) {
+                localStorage.setItem('repriwey_status', newStatus);
+                document.getElementById('status-text-display').innerText = newStatus;
+                document.getElementById('status-input').value = '';
+                toggleModal('admin-panel');
+            }
+        }
+
+        // Предпросмотр прикрепляемого изображения
+        function previewFile() {
+            const file = document.getElementById('p-file').files[0];
+            const textText = document.getElementById('file-status-text');
+            if (file) {
+                textText.innerText = file.name;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    document.getElementById('img-preview').src = e.target.result;
+                    document.getElementById('file-preview-container').classList.remove('hidden');
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Рендеринг и сохранение проектов
+        let vault = JSON.parse(localStorage.getItem('repriwey_vault')) || [];
+        
+        function render() {
+            const grid = document.getElementById('projects-grid');
+            const auth = isAuthorized();
+            
+            grid.innerHTML = vault.length ? vault.map((p, i) => `
+                <div class="glass-card project-item scale-up">
+                    ${p.img ? `<img src="${p.img}" class="p-img">` : ''}
+                    <h4>${p.name}</h4>
+                    <p>${p.about}</p>
+                    ${auth ? `
+                        <div class="admin-actions" style="margin-top: 15px; display: flex; gap: 10px;">
+                            <button class="edit-btn" onclick="editProject(${i})">Edit</button>
+                            <button class="del-btn" onclick="delProject(${i})">Remove</button>
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('') : '<p class="empty-msg">Пока нет активных проектов...</p>';
+        }
+
+        // Добавление или сохранение отредактированного проекта
+        async function saveProject() {
+            const name = document.getElementById('p-name').value;
+            const about = document.getElementById('p-about').value;
+            const editIndex = parseInt(document.getElementById('edit-index').value);
+            let img = document.getElementById('img-preview').src || "";
+
+            if(name && about) {
+                const projectData = {
+                    name, 
+                    about, 
+                    img: (img.startsWith('data:') || img.startsWith('http')) ? img : ""
+                };
+
+                if (editIndex > -1) {
+                    // Если картинку не меняли и превью пустое, оставляем старую картинку
+                    if (!img && vault[editIndex].img) {
+                        projectData.img = vault[editIndex].img;
+                    }
+                    vault[editIndex] = projectData;
+                } else {
+                    vault.push(projectData);
+                }
+
+                localStorage.setItem('repriwey_vault', JSON.stringify(vault));
+                render();
+                resetForm();
+                toggleModal('admin-panel');
+            }
+        }
+
+        // Заполнение формы для редактирования
+        function editProject(i) {
+            const p = vault[i];
+            document.getElementById('edit-index').value = i;
+            document.getElementById('p-name').value = p.name;
+            document.getElementById('p-about').value = p.about;
+            
+            document.getElementById('admin-panel-title').innerText = "Редактирование проекта";
+            document.getElementById('submit-project-btn').innerText = "Сохранить изменения";
+            document.getElementById('cancel-edit-btn').classList.remove('hidden');
+
+            if(p.img) {
+                document.getElementById('img-preview').src = p.img;
+                document.getElementById('file-preview-container').classList.remove('hidden');
+                document.getElementById('file-status-text').innerText = 'Старое изображение сохранено';
+            } else {
+                document.getElementById('img-preview').src = '';
+                document.getElementById('file-preview-container').classList.add('hidden');
+                document.getElementById('file-status-text').innerText = 'Файл не выбран';
+            }
+
+            // Скроллим к админ-панели для удобства, если она открыта
+            const panel = document.getElementById('admin-panel');
+            if(panel.classList.contains('hidden')) {
+                panel.classList.remove('hidden');
+            }
+            panel.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function cancelEdit() {
+            resetForm();
+        }
+
+        function resetForm() {
+            document.getElementById('edit-index').value = "-1";
+            document.getElementById('p-name').value = '';
+            document.getElementById('p-about').value = '';
+            document.getElementById('p-file').value = '';
+            document.getElementById('img-preview').src = '';
+            document.getElementById('admin-panel-title').innerText = "Управление проектами";
+            document.getElementById('submit-project-btn').innerText = "Опубликовать проект";
+            document.getElementById('cancel-edit-btn').classList.add('hidden');
+            document.getElementById('file-status-text').innerText = 'Файл не выбран';
+            document.getElementById('file-preview-container').classList.add('hidden');
+        }
+
+        function delProject(i) {
+            if(confirm('Удалить проект?')) {
+                vault.splice(i,1);
+                localStorage.setItem('repriwey_vault', JSON.stringify(vault));
+                render();
+                if(parseInt(document.getElementById('edit-index').value) === i) {
+                    resetForm();
+                }
+            }
+        }
+        render();
     </script>
 </body>
 </html>
